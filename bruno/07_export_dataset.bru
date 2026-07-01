@@ -1,0 +1,19 @@
+meta {
+  name: 07 Export Dataset
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/credit-signal/dataset?format=json
+  body: none
+  auth: none
+}
+
+params:query {
+  format: json
+}
+
+headers {
+  X-API-Key: {{apiKey}}
+}

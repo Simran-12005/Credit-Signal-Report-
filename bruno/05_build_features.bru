@@ -1,0 +1,27 @@
+meta {
+  name: 05 Build Features
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/credit-signal/features/build
+  body: json
+  auth: none
+}
+
+headers {
+  X-API-Key: {{apiKey}}
+}
+
+body:json {
+  {
+    "gstin": "27AAACD2532K1ZT"
+  }
+}
+
+script:post-response {
+  if (res.body && res.body.id) {
+    bru.setVar("snapshotId", res.body.id);
+  }
+}

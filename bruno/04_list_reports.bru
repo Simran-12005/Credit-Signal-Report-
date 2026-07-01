@@ -1,0 +1,25 @@
+meta {
+  name: 04 List Reports
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/credit-signal/reports?limit=50&offset=0
+  body: none
+  auth: none
+}
+
+headers {
+  X-API-Key: {{apiKey}}
+}
+
+params:query {
+  limit: 50
+  offset: 0
+}
+
+vars:pre-request {
+  baseUrl: http://localhost:8120
+  apiKey: csr_TiVVPEvVuHbshB_2VmkzIUggFTxKqN9Nmfl8T3Ixa68
+}

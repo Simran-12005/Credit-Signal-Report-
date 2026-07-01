@@ -1,0 +1,538 @@
+{
+  "count": 4,
+  "reports": [
+    {
+      "supplier": "Dashboard User",
+      "gstin": "27AAACD2532K1ZT",
+      "score": 84.04,
+      "risk_band": "Low",
+      "status": "ready",
+      "gst_provider": "sandbox",
+      "mca_provider": "mock",
+      "gst_identity": {
+        "pan": "AAACD2532K",
+        "gstin": "27AAACD2532K1ZT",
+        "state": "BOISAR_604",
+        "status": "Active",
+        "legal_name": "D C TEXTILE MILLS PRIVATE LIMITED",
+        "state_code": "Maharashtra",
+        "trade_name": "D C TEXTILE MILLS PVT LTD",
+        "constitution": "Private Limited Company",
+        "taxpayer_type": "Regular",
+        "cancellation_date": "",
+        "registration_date": "01/07/2017"
+      },
+      "gst_compliance": {
+        "filings": [
+          {
+            "mode": "ONLINE",
+            "period": "052026",
+            "status": "Filed",
+            "filed_date": "20-06-2026",
+            "return_type": "GSTR3B"
+          },
+          {
+            "mode": "ONLINE",
+            "period": "042026",
+            "status": "Filed",
+            "filed_date": "20-05-2026",
+            "return_type": "GSTR3B"
+          },
+          {
+            "mode": "ONLINE",
+            "period": "042026",
+            "status": "Filed",
+            "filed_date": "11-05-2026",
+            "return_type": "GSTR1"
+          },
+          {
+            "mode": "ONLINE",
+            "period": "052026",
+            "status": "Filed",
+            "filed_date": "04-06-2026",
+            "return_type": "GSTR1"
+          }
+        ],
+        "available": true,
+        "returns_filed": 4,
+        "financial_year": "FY 2026-27",
+        "last_return_filed_date": "20-06-2026"
+      },
+      "mca_company": {
+        "cin": "U75537272008PTC255537",
+        "roc": "RoC-Mumbai",
+        "status": "Dormant",
+        "age_years": 18.1,
+        "company_name": "Mock Traders AAACD Pvt Ltd",
+        "entity_class": "Private Limited Company",
+        "paid_up_capital": 2166000,
+        "authorized_capital": 3800000,
+        "incorporation_date": "2007-11-15",
+        "registered_with_mca": true
+      },
+      "mca_directors": {
+        "count": 3,
+        "directors": [
+          {
+            "din": "30855537",
+            "name": "Director AAA1",
+            "designation": "Director",
+            "appointment_date": "2017-11-12"
+          },
+          {
+            "din": "55784591",
+            "name": "Director AAA2",
+            "designation": "Whole-time Director",
+            "appointment_date": "2023-06-10"
+          },
+          {
+            "din": "23538221",
+            "name": "Director AAA3",
+            "designation": "Director",
+            "appointment_date": "2023-05-11"
+          }
+        ],
+        "has_disqualified_director": false
+      },
+      "mca_charges": {
+        "charges": [
+          {
+            "amount": 13800000,
+            "holder": "Bajaj Finserv",
+            "status": "open",
+            "creation_date": "2024-01-02"
+          }
+        ],
+        "open_count": 1,
+        "satisfied_count": 0,
+        "total_open_amount": 13800000
+      },
+      "mca_legal": {
+        "recovery_cases": [],
+        "insolvency_cases": [],
+        "recovery_case_count": 0,
+        "has_active_insolvency": false,
+        "total_recovery_amount": 0
+      },
+      "score_breakdown": {
+        "score": 84.04,
+        "signals": [
+          {
+            "key": "payment_history",
+            "label": "Own payment history",
+            "detail": "No payment history",
+            "weight": 0.25,
+            "available": false,
+            "sub_score": null,
+            "contribution": 0.0
+          },
+          {
+            "key": "gst_compliance",
+            "label": "GST filing compliance",
+            "detail": "No filing data",
+            "weight": 0.2,
+            "available": false,
+            "sub_score": null,
+            "contribution": 0.0
+          },
+          {
+            "key": "legal",
+            "label": "Insolvency / recovery cases",
+            "detail": "No cases",
+            "weight": 0.15,
+            "available": true,
+            "sub_score": 100.0,
+            "contribution": 15.0
+          },
+          {
+            "key": "gst_status",
+            "label": "GST registration status",
+            "detail": "Status: Active",
+            "weight": 0.12,
+            "available": true,
+            "sub_score": 100.0,
+            "contribution": 12.0
+          },
+          {
+            "key": "mca_status",
+            "label": "Company status (MCA)",
+            "detail": "Status: Dormant",
+            "weight": 0.1,
+            "available": true,
+            "sub_score": 50.0,
+            "contribution": 5.0
+          },
+          {
+            "key": "mca_charges",
+            "label": "Secured-debt load (charges)",
+            "detail": "1 open charge(s)",
+            "weight": 0.1,
+            "available": true,
+            "sub_score": 75.0,
+            "contribution": 7.5
+          },
+          {
+            "key": "gst_age",
+            "label": "Years GST-registered",
+            "detail": "No registration date",
+            "weight": 0.08,
+            "available": false,
+            "sub_score": null,
+            "contribution": 0.0
+          }
+        ],
+        "overrides": [],
+        "risk_band": "Low"
+      },
+      "created_at": "2026-06-26T18:52:20.193021+00:00"
+    },
+    {
+      "supplier": "Dashboard User",
+      "gstin": "27ACIFS3818C1Z6",
+      "score": null,
+      "risk_band": "Unknown",
+      "status": "failed",
+      "gst_provider": "sandbox",
+      "mca_provider": "mock",
+      "gst_identity": null,
+      "gst_compliance": null,
+      "mca_company": {
+        "cin": "U59347272016PTC689347",
+        "roc": "RoC-Mumbai",
+        "status": "Dormant",
+        "age_years": 10.9,
+        "company_name": "Mock Traders ACIFS Pvt Ltd",
+        "entity_class": "Limited Liability Partnership",
+        "paid_up_capital": 3696000,
+        "authorized_capital": 4800000,
+        "incorporation_date": "2015-01-27",
+        "registered_with_mca": true
+      },
+      "mca_directors": {
+        "count": 5,
+        "directors": [
+          {
+            "din": "87089347",
+            "name": "Director ACI1",
+            "designation": "Whole-time Director",
+            "appointment_date": "2017-01-26"
+          },
+          {
+            "din": "96433942",
+            "name": "Director ACI2",
+            "designation": "Managing Director",
+            "appointment_date": "2022-12-31"
+          },
+          {
+            "din": "25103257",
+            "name": "Director ACI3",
+            "designation": "Director",
+            "appointment_date": "2017-08-14"
+          },
+          {
+            "din": "79668372",
+            "name": "Director ACI4",
+            "designation": "Director",
+            "appointment_date": "2022-03-01"
+          },
+          {
+            "din": "20819017",
+            "name": "Director ACI5",
+            "designation": "Director",
+            "appointment_date": "2017-03-27"
+          }
+        ],
+        "has_disqualified_director": false
+      },
+      "mca_charges": {
+        "charges": [
+          {
+            "amount": 14800000,
+            "holder": "Axis Bank",
+            "status": "satisfied",
+            "creation_date": "2022-01-02"
+          },
+          {
+            "amount": 8600000,
+            "holder": "State Bank of India",
+            "status": "open",
+            "creation_date": "2020-01-03"
+          },
+          {
+            "amount": 3100000,
+            "holder": "ICICI Bank",
+            "status": "open",
+            "creation_date": "2019-01-03"
+          }
+        ],
+        "open_count": 2,
+        "satisfied_count": 1,
+        "total_open_amount": 11700000
+      },
+      "mca_legal": {
+        "recovery_cases": [],
+        "insolvency_cases": [],
+        "recovery_case_count": 0,
+        "has_active_insolvency": false,
+        "total_recovery_amount": 0
+      },
+      "score_breakdown": {
+        "note": "No score: GST lookup failed, so there is no reliable data to score.",
+        "score": null,
+        "signals": [],
+        "overrides": [],
+        "risk_band": "Unknown"
+      },
+      "created_at": "2026-06-26T18:49:15.402469+00:00"
+    },
+    {
+      "supplier": "Dashboard User",
+      "gstin": "29AAIFC4058J1Z5",
+      "score": 44.0,
+      "risk_band": "High",
+      "status": "ready",
+      "gst_provider": "sandbox",
+      "mca_provider": "mock",
+      "gst_identity": {
+        "pan": "AAIFC4058J",
+        "gstin": "29AAIFC4058J1Z5",
+        "state": "LGSTO 016- Bengaluru",
+        "status": "Active",
+        "legal_name": "CREATION",
+        "state_code": "Karnataka",
+        "trade_name": "CREATION",
+        "constitution": "Partnership",
+        "taxpayer_type": "Regular",
+        "cancellation_date": "",
+        "registration_date": "01/07/2017"
+      },
+      "gst_compliance": {
+        "filings": [
+          {
+            "mode": "ONLINE",
+            "period": "052026",
+            "status": "Filed",
+            "filed_date": "20-06-2026",
+            "return_type": "GSTR3B"
+          },
+          {
+            "mode": "ONLINE",
+            "period": "042026",
+            "status": "Filed",
+            "filed_date": "20-05-2026",
+            "return_type": "GSTR3B"
+          },
+          {
+            "mode": "ONLINE",
+            "period": "052026",
+            "status": "Filed",
+            "filed_date": "10-06-2026",
+            "return_type": "GSTR1"
+          },
+          {
+            "mode": "ONLINE",
+            "period": "042026",
+            "status": "Filed",
+            "filed_date": "09-05-2026",
+            "return_type": "GSTR1"
+          }
+        ],
+        "available": true,
+        "returns_filed": 4,
+        "financial_year": "FY 2026-27",
+        "last_return_filed_date": "20-06-2026"
+      },
+      "mca_company": {
+        "cin": "U74648292015PTC794648",
+        "roc": "RoC-Bangalore",
+        "status": "Strike Off",
+        "age_years": 11.7,
+        "company_name": "Mock Traders AAIFC Pvt Ltd",
+        "entity_class": "Limited Liability Partnership",
+        "paid_up_capital": 4311999,
+        "authorized_capital": 4900000,
+        "incorporation_date": "2014-04-16",
+        "registered_with_mca": true
+      },
+      "mca_directors": {
+        "count": 2,
+        "directors": [
+          {
+            "din": "54794648",
+            "name": "Director AAI1",
+            "designation": "Director",
+            "appointment_date": "2016-04-15"
+          },
+          {
+            "din": "99823416",
+            "name": "Director AAI2",
+            "designation": "Director",
+            "appointment_date": "2018-10-19"
+          }
+        ],
+        "has_disqualified_director": false
+      },
+      "mca_charges": {
+        "charges": [],
+        "open_count": 0,
+        "satisfied_count": 0,
+        "total_open_amount": 0
+      },
+      "mca_legal": {
+        "recovery_cases": [],
+        "insolvency_cases": [],
+        "recovery_case_count": 0,
+        "has_active_insolvency": false,
+        "total_recovery_amount": 0
+      },
+      "score_breakdown": {
+        "score": 44.0,
+        "signals": [
+          {
+            "key": "payment_history",
+            "label": "Own payment history",
+            "detail": "No payment history",
+            "weight": 0.25,
+            "available": false,
+            "sub_score": null,
+            "contribution": 0.0
+          },
+          {
+            "key": "gst_compliance",
+            "label": "GST filing compliance",
+            "detail": "No filing data",
+            "weight": 0.2,
+            "available": false,
+            "sub_score": null,
+            "contribution": 0.0
+          },
+          {
+            "key": "legal",
+            "label": "Insolvency / recovery cases",
+            "detail": "No cases",
+            "weight": 0.15,
+            "available": true,
+            "sub_score": 100.0,
+            "contribution": 15.0
+          },
+          {
+            "key": "gst_status",
+            "label": "GST registration status",
+            "detail": "Status: Active",
+            "weight": 0.12,
+            "available": true,
+            "sub_score": 100.0,
+            "contribution": 12.0
+          },
+          {
+            "key": "mca_status",
+            "label": "Company status (MCA)",
+            "detail": "Status: Strike Off",
+            "weight": 0.1,
+            "available": true,
+            "sub_score": 0.0,
+            "contribution": 0.0
+          },
+          {
+            "key": "mca_charges",
+            "label": "Secured-debt load (charges)",
+            "detail": "0 open charge(s)",
+            "weight": 0.1,
+            "available": true,
+            "sub_score": 100.0,
+            "contribution": 10.0
+          },
+          {
+            "key": "gst_age",
+            "label": "Years GST-registered",
+            "detail": "No registration date",
+            "weight": 0.08,
+            "available": false,
+            "sub_score": null,
+            "contribution": 0.0
+          }
+        ],
+        "overrides": [
+          "Company under liquidation / struck off"
+        ],
+        "risk_band": "High"
+      },
+      "created_at": "2026-06-26T18:48:47.257548+00:00"
+    },
+    {
+      "supplier": "Dashboard User",
+      "gstin": "24AAHCS4768D2Z9",
+      "score": null,
+      "risk_band": "Unknown",
+      "status": "failed",
+      "gst_provider": "sandbox",
+      "mca_provider": "mock",
+      "gst_identity": null,
+      "gst_compliance": null,
+      "mca_company": {
+        "cin": "U46857242014PTC766857",
+        "roc": "RoC-Ahmedabad",
+        "status": "Dormant",
+        "age_years": 12.9,
+        "company_name": "Mock Traders AAHCS Pvt Ltd",
+        "entity_class": "Private Limited Company",
+        "paid_up_capital": 616000,
+        "authorized_capital": 800000,
+        "incorporation_date": "2013-02-21",
+        "registered_with_mca": true
+      },
+      "mca_directors": {
+        "count": 3,
+        "directors": [
+          {
+            "din": "84466857",
+            "name": "Director AAH1",
+            "designation": "Director",
+            "appointment_date": "2017-02-20"
+          },
+          {
+            "din": "84822136",
+            "name": "Director AAH2",
+            "designation": "Director",
+            "appointment_date": "2018-11-23"
+          },
+          {
+            "din": "63378211",
+            "name": "Director AAH3",
+            "designation": "Whole-time Director",
+            "appointment_date": "2023-11-02"
+          }
+        ],
+        "has_disqualified_director": false
+      },
+      "mca_charges": {
+        "charges": [
+          {
+            "amount": 5800000,
+            "holder": "Bajaj Finserv",
+            "status": "open",
+            "creation_date": "2024-01-02"
+          }
+        ],
+        "open_count": 1,
+        "satisfied_count": 0,
+        "total_open_amount": 5800000
+      },
+      "mca_legal": {
+        "recovery_cases": [],
+        "insolvency_cases": [],
+        "recovery_case_count": 0,
+        "has_active_insolvency": false,
+        "total_recovery_amount": 0
+      },
+      "score_breakdown": {
+        "note": "No score: GST lookup failed, so there is no reliable data to score.",
+        "score": null,
+        "signals": [],
+        "overrides": [],
+        "risk_band": "Unknown"
+      },
+      "created_at": "2026-06-26T18:47:52.278328+00:00"
+    }
+  ]
+}

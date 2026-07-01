@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Credit Signal — Report Dashboard</title>
+  <style>
+    :root { --bg:#0f1419; --panel:#1a2230; --line:#2b3648; --txt:#e6edf3; --muted:#9bafc7;
+            --accent:#3b82f6; --good:#22c55e; --warn:#f59e0b; --bad:#ef4444; }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--bg); color:var(--txt);
+           font:14px/1.5 system-ui, Segoe UI, Roboto, sans-serif; }
+    header { padding:14px 20px; background:var(--panel); border-bottom:1px solid var(--line);
+             display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+    header h1 { font-size:16px; margin:0 12px 0 0; }
+    main { display:grid; grid-template-columns:320px 1fr; gap:16px; padding:16px; }
+    .panel { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px; }
+    h2 { font-size:13px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); margin:0 0 10px; }
+    input, button { font:inherit; }
+    input { background:#0d1320; border:1px solid var(--line); color:var(--txt);
+            border-radius:6px; padding:7px 9px; width:100%; }
+    label { display:block; font-size:12px; color:var(--muted); margin:8px 0 3px; }
+    button { background:var(--accent); border:0; color:#fff; border-radius:6px;
+             padding:8px 12px; cursor:pointer; }
+    button.ghost { background:#26344a; }
+    button.sm { padding:4px 8px; font-size:12px; }
+    button:hover { filter:brightness(1.1); }
+    .item { padding:9px 10px; border:1px solid var(--line); border-radius:8px; margin-bottom:7px; cursor:pointer;
+            display:flex; justify-content:space-between; align-items:center; gap:8px; }
+    .item:hover { border-color:var(--accent); }
+    .item.active { border-color:var(--accent); background:#0d1320; }
+    .band { display:inline-block; font-size:11px; font-weight:700; padding:2px 9px; border-radius:99px; }
+    .band.Low{background:rgba(34,197,94,.16);color:var(--good)}
+    .band.Medium{background:rgba(245,158,11,.16);color:var(--warn)}
+    .band.High{background:rgba(239,68,68,.18);color:var(--bad)}
+    .band.Unknown{background:rgba(155,175,199,.16);color:var(--muted)}
+    .scorewrap { display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+    .scorebig { font-size:46px; font-weight:800; line-height:1; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; }
+    .kv { background:#0d1320; border:1px solid var(--line); border-radius:8px; padding:9px 11px; }
+    .kv .k { color:var(--muted); font-size:11px; } .kv .v { font-weight:600; word-break:break-word; }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    th, td { text-align:left; padding:6px 8px; border-bottom:1px solid var(--line); }
+    th { color:var(--muted); font-weight:600; }
+    .bar { height:7px; background:#0d1320; border-radius:99px; overflow:hidden; min-width:80px; }
+    .bar > span { display:block; height:100%; background:var(--accent); }
+    .muted { color:var(--muted); } .bad { color:var(--bad); }
+    .warnbox { background:rgba(239,68,68,.12); border:1px solid rgba(239,68,68,.4); color:#fecaca;
+               border-radius:8px; padding:8px 11px; margin:10px 0; font-size:13px; }
+    .section { margin-top:20px; }
+    #toast { position:fixed; right:16px; bottom:16px; background:var(--panel); border:1px solid var(--line);
+             padding:10px 14px; border-radius:8px; opacity:0; transition:opacity .2s; max-width:360px; }
+    #toast.show { opacity:1; }
+    @media print {
+      header, #leftcol, .noprint { display:none !important; }
+      body { background:#fff; color:#000; }
+      main { display:block; padding:0; }
+      .panel { border:0; }
+      .kv, .bar { border-color:#ccc; background:#f4f4f4; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>📊 Credit Signal Dashboard</h1>
+    <div style="flex:1; min-width:240px;">
+      <input id="apiKey" placeholder="Paste your X-API-Key (csr_…)" />
+    </div>
+    <button class="ghost" onclick="saveKey()">Save key</button>
+    <button class="ghost" onclick="showAll()">📋 All reports</button>
+    <button class="ghost" onclick="downloadCsv()">⬇ Download CSV</button>
+    <button class="ghost" onclick="window.print()">🖨 Print / Save PDF</button>
+    <a class="noprint" href="/simulator" style="color:var(--muted);font-size:12px;align-self:center;">Payment simulator →</a>
+  </header>
+
+  <main>
+    <section id="leftcol">
+      <div class="panel">
+        <h2>Run a credit report</h2>
+        <label>Buyer GSTIN</label>
+        <input id="gstin" placeholder="27AAACR5055K1Z7" />
+        <div style="margin-top:10px;"><button onclick="runReport()">Run report</button></div>
+        <p class="muted" style="font-size:12px;margin:10px 0 0;">
+          Looks up GST + company/legal data and computes the credit score. Repeats are cached (no double charge).
+        </p>
+      </div>
+
+      <div class="panel" style="margin-top:14px;">
+        <h2>Recent reports</h2>
+        <div id="list"><p class="muted">Save your key to see past reports.</p></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div id="detail"><p class="muted">Run a report, or pick one from the list, to see it here.</p></div>
+    </section>
+  </main>
+
+  <div id="toast"></div>
+
+  <script>
+    const base = window.location.origin;
+    let activeId = null;
+    let lastReports = [];
+
+    function key() { return document.getElementById('apiKey').value.trim(); }
+    function saveKey() { localStorage.setItem('csrKey', key()); toast('Key saved.'); loadList(); }
+    function toast(msg, bad=false) {
+      const t = document.getElementById('toast');
+      t.textContent = msg; t.className = 'show'; t.style.borderColor = bad ? 'var(--bad)' : 'var(--line)';
+      setTimeout(() => t.className = '', 3000);
+    }
+    async function api(path, opts={}) {
+      const headers = Object.assign({'X-API-Key': key()}, opts.headers || {});
+      if (opts.json !== undefined) { headers['Content-Type'] = 'application/json'; opts.body = JSON.stringify(opts.json); }
+      const res = await fetch(base + path, {method: opts.method || 'GET', headers, body: opts.body});
+      const text = await res.text();
+      const data = text ? JSON.parse(text) : null;
+      if (!res.ok) throw new Error((data && data.detail) ? (typeof data.detail==='string'?data.detail:JSON.stringify(data.detail)) : res.status);
+      return data;
+    }
+    const esc = s => (s==null?'':String(s)).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    const pct = n => n==null ? '—' : Math.round(n*100)+'%';
+
+    async function loadList() {
+      if (!key()) return;
+      try {
+        const raw = await api('/credit-signal/reports?limit=200');
+        // Keep only the latest report per GSTIN (raw is newest-first).
+        const seen = new Set(); lastReports = [];
+        for (const r of raw) { if (seen.has(r.gstin)) continue; seen.add(r.gstin); lastReports.push(r); }
+        const el = document.getElementById('list');
+        if (!lastReports.length) { el.innerHTML = '<p class="muted">No reports yet.</p>'; return; }
+        el.innerHTML = lastReports.map(r => `
+          <div class="item ${activeId===r.id?'active':''}" onclick="openReport('${r.id}')">
+            <span><strong>${esc(r.gstin)}</strong><br><span class="muted" style="font-size:12px">${esc(r.status)}</span></span>
+            <span>${r.score==null?'':r.score} <span class="band ${r.risk_band||'Unknown'}">${r.risk_band||'—'}</span></span>
+          </div>`).join('');
+      } catch (e) { toast('Load failed: ' + e.message, true); }
+    }
+
+    async function runReport() {
+      const gstin = document.getElementById('gstin').value.trim();
+      if (!gstin) return toast('Enter a GSTIN.', true);
+      if (!key()) return toast('Save your API key first.', true);
+      toast('Running report…');
+      try {
+        const r = await api('/credit-signal/reports', {method:'POST', json:{gstin}});
+        activeId = r.id; render(r); loadList();
+        toast('Report ready.');
+      } catch (e) { toast('Error: ' + e.message, true); }
+    }
+
+    async function openReport(id) {
+      activeId = id;
+      try { const r = await api('/credit-signal/reports/'+id); render(r); loadList(); }
+      catch (e) { toast('Error: ' + e.message, true); }
+    }
+
+    // Show ALL saved reports together in one table (one row per GSTIN, latest run).
+    async function showAll() {
+      if (!key()) return toast('Save your API key first.', true);
+      await loadList();
+      if (!lastReports.length) { document.getElementById('detail').innerHTML = '<p class="muted">No saved reports yet.</p>'; return; }
+      const rows = lastReports.map(r => `
+        <tr style="cursor:pointer" onclick="openReport('${r.id}')">
+          <td><strong>${esc(r.gstin)}</strong></td>
+          <td>${r.status==='ready' ? '<span class="ok">ready</span>' : '<span class="bad">'+esc(r.status)+'</span>'}</td>
+          <td>${r.score==null?'—':r.score}</td>
+          <td><span class="band ${r.risk_band||'Unknown'}">${r.risk_band||'—'}</span></td>
+          <td class="muted">${(r.created_at||'').slice(0,10)}</td>
+        </tr>`).join('');
+      document.getElementById('detail').innerHTML = `
+        <h2>All saved reports (${lastReports.length})</h2>
+        <p class="muted" style="font-size:12px;margin:0 0 10px;">One row per GSTIN — click any row to open the full report. ⬇ Download CSV exports this list.</p>
+        <table>
+          <thead><tr><th>GSTIN</th><th>Status</th><th>Score</th><th>Risk</th><th>Date</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>`;
+    }
+
+    function kvBlock(title, obj, fields) {
+      if (!obj) return `<div class="section"><h2>${title}</h2><p class="muted">No data.</p></div>`;
+      const items = fields.filter(([k]) => obj[k] !== undefined && obj[k] !== null)
+        .map(([k,label,fmt]) => `<div class="kv"><div class="k">${label}</div><div class="v">${esc(fmt?fmt(obj[k]):obj[k])}</div></div>`).join('');
+      return `<div class="section"><h2>${title}</h2><div class="grid">${items || '<p class="muted">No fields.</p>'}</div></div>`;
+    }
+
+    function render(r) {
+      const b = r.score_breakdown || {};
+      const overrides = (b.overrides || []);
+      const sigRows = (b.signals || []).map(s => `
+        <tr style="${s.available?'':'opacity:.45'}">
+          <td>${esc(s.label)}</td>
+          <td>${(s.weight*100).toFixed(0)}%</td>
+          <td>${s.available && s.sub_score!=null ? `<div class="bar"><span style="width:${s.sub_score}%"></span></div>` : '<span class="muted">n/a</span>'}</td>
+          <td>${s.available && s.sub_score!=null ? s.sub_score.toFixed(0) : '—'}</td>
+          <td>${s.contribution!=null ? s.contribution.toFixed(1) : '—'}</td>
+          <td class="muted">${esc(s.detail)}</td>
+        </tr>`).join('');
+
+      document.getElementById('detail').innerHTML = `
+        <div class="scorewrap">
+          <div>
+            <div class="muted" style="font-size:12px">CREDIT SCORE — ${esc(r.gstin)}</div>
+            <div class="scorebig">${r.score==null?'—':r.score}<span style="font-size:18px;color:var(--muted)"> / 100</span></div>
+          </div>
+          <div><span class="band ${r.risk_band||'Unknown'}" style="font-size:14px;padding:5px 14px">${r.risk_band||'Unknown'} risk</span></div>
+          <div class="muted" style="font-size:12px">GST: ${esc(r.provider||'—')} · MCA: ${esc(r.mca_provider||'—')} · status: ${esc(r.status)}</div>
+        </div>
+        ${r.error ? `<div class="warnbox">⚠ ${esc(r.error)}</div>` : ''}
+        ${overrides.length ? `<div class="warnbox">⚠ Forced High risk: ${overrides.map(esc).join('; ')}</div>` : ''}
+
+        ${kvBlock('GST identity', r.gst_identity, [
+          ['legal_name','Legal name'],['trade_name','Trade name'],['status','GST status'],
+          ['taxpayer_type','Type'],['constitution','Constitution'],['state','State'],
+          ['registration_date','Registered'],['pan','PAN']])}
+
+        ${kvBlock('GST compliance', r.gst_compliance, [
+          ['on_time_filing_rate','On-time filing',pct],['returns_filed_12m','Returns filed (12m)'],
+          ['returns_filed','Returns filed'],['missed_filings_12m','Missed (12m)'],
+          ['last_return_filed_date','Last filed'],['is_compliant','Compliant'],
+          ['financial_year','FY']])}
+
+        ${kvBlock('Company (MCA)', r.mca_company, [
+          ['registered_with_mca','On MCA'],['company_name','Company'],['entity_class','Class'],
+          ['status','Company status'],['incorporation_date','Incorporated'],['age_years','Age (yrs)'],
+          ['roc','RoC'],['paid_up_capital','Paid-up capital']])}
+
+        ${kvBlock('Charges & directors', Object.assign({}, r.mca_charges||{}, {dcount:(r.mca_directors||{}).count}), [
+          ['dcount','Directors'],['open_count','Open charges'],['satisfied_count','Satisfied charges'],
+          ['total_open_amount','Open charge amount']])}
+
+        ${kvBlock('Legal', r.mca_legal, [
+          ['has_active_insolvency','Active insolvency'],['recovery_case_count','Recovery cases'],
+          ['total_recovery_amount','Recovery amount']])}
+
+        <div class="section">
+          <h2>Why this score</h2>
+          <table>
+            <thead><tr><th>Signal</th><th>Weight</th><th>Score</th><th></th><th>Contrib.</th><th>Detail</th></tr></thead>
+            <tbody>${sigRows || '<tr><td colspan="6" class="muted">No signals.</td></tr>'}</tbody>
+          </table>
+        </div>
+
+        ${companyForm(r)}`;
+    }
+
+    // Manual company-data entry (look it up free on mca.gov.in, then type it here).
+    function companyForm(r) {
+      const co = r.mca_company || {}, di = r.mca_directors || {}, ch = r.mca_charges || {}, lg = r.mca_legal || {};
+      const v = x => x == null ? '' : x;
+      const statuses = ['', 'Active', 'Dormant', 'Strike Off', 'Under Liquidation', 'Amalgamated'];
+      const opts = statuses.map(s => `<option value="${s}" ${co.status===s?'selected':''}>${s||'—'}</option>`).join('');
+      const manual = r.mca_provider === 'manual';
+      return `
+      <div class="section noprint">
+        <h2>✏️ Enter company data (from mca.gov.in) ${manual?'<span class="ok" style="font-size:11px">● saved manually</span>':'<span class="muted" style="font-size:11px">(currently '+esc(r.mca_provider||'—')+')</span>'}</h2>
+        <p class="muted" style="font-size:12px;margin:0 0 10px;">Look the company up free at <a href="https://www.mca.gov.in" target="_blank" style="color:var(--accent)">mca.gov.in</a> → View Company/LLP Master Data, then fill what you find. Saving recomputes the score with real data.</p>
+        <div class="grid">
+          <div><label>Company status</label><select id="mc_status">${opts}</select></div>
+          <div><label>Incorporation date</label><input id="mc_inc" type="date" value="${v(co.incorporation_date)}" /></div>
+          <div><label>Class</label><input id="mc_class" value="${esc(v(co.entity_class))}" placeholder="Private Limited Company" /></div>
+          <div><label>Company name</label><input id="mc_name" value="${esc(v(co.company_name))}" /></div>
+          <div><label>Directors</label><input id="mc_dir" type="number" min="0" value="${v(di.count)}" /></div>
+          <div><label>Open charges</label><input id="mc_open" type="number" min="0" value="${v(ch.open_count)}" /></div>
+          <div><label>Open charge amount</label><input id="mc_openamt" type="number" min="0" value="${v(ch.total_open_amount)}" /></div>
+          <div><label>Paid-up capital</label><input id="mc_capital" type="number" min="0" value="${v(co.paid_up_capital)}" /></div>
+          <div><label>Recovery cases</label><input id="mc_recov" type="number" min="0" value="${v(lg.recovery_case_count)}" /></div>
+          <div><label>Active insolvency?</label><select id="mc_insolv"><option value="no" ${lg.has_active_insolvency?'':'selected'}>No</option><option value="yes" ${lg.has_active_insolvency?'selected':''}>Yes</option></select></div>
+          <div><label>On MCA (company/LLP)?</label><select id="mc_reg"><option value="yes" ${co.registered_with_mca===false?'':'selected'}>Yes</option><option value="no" ${co.registered_with_mca===false?'selected':''}>No</option></select></div>
+        </div>
+        <div style="margin-top:10px;"><button onclick="saveCompany('${r.id}')">Save company data &amp; recompute score</button></div>
+      </div>`;
+    }
+
+    async function saveCompany(id) {
+      const gv = i => { const x = document.getElementById(i).value.trim(); return x === '' ? null : x; };
+      const nv = i => { const x = parseFloat(document.getElementById(i).value); return isNaN(x) ? null : x; };
+      const body = {
+        registered_with_mca: document.getElementById('mc_reg').value === 'yes',
+        company_name: gv('mc_name'),
+        entity_class: gv('mc_class'),
+        status: gv('mc_status'),
+        incorporation_date: gv('mc_inc'),
+        paid_up_capital: nv('mc_capital'),
+        director_count: nv('mc_dir'),
+        open_charges: nv('mc_open'),
+        total_open_charge_amount: nv('mc_openamt'),
+        has_active_insolvency: document.getElementById('mc_insolv').value === 'yes',
+        recovery_case_count: nv('mc_recov') || 0,
+      };
+      try {
+        const r = await api('/credit-signal/reports/' + id + '/company', {method:'PATCH', json:body});
+        render(r); loadList(); toast('Company data saved — score updated.');
+      } catch (e) { toast('Error: ' + e.message, true); }
+    }
+
+    // ---- CSV of everything shown in the dashboard (the reports list) ----
+    function flatten(r) {
+      const gi=r.gst_identity||{}, gc=r.gst_compliance||{}, co=r.mca_company||{}, ch=r.mca_charges||{}, lg=r.mca_legal||{};
+      return {
+        gstin:r.gstin, score:r.score, risk_band:r.risk_band, status:r.status,
+        gst_legal_name:gi.legal_name, gst_status:gi.status, gst_type:gi.taxpayer_type,
+        gst_state:gi.state, gst_registration_date:gi.registration_date,
+        gst_on_time_filing_rate:gc.on_time_filing_rate, gst_returns_filed:gc.returns_filed_12m ?? gc.returns_filed,
+        mca_registered:co.registered_with_mca, mca_company_status:co.status, mca_age_years:co.age_years,
+        mca_open_charges:ch.open_count, legal_active_insolvency:lg.has_active_insolvency,
+        legal_recovery_cases:lg.recovery_case_count,
+      };
+    }
+    function downloadCsv() {
+      if (!lastReports.length) return toast('No reports to export yet.', true);
+      const rows = lastReports.map(flatten);
+      const cols = Object.keys(rows[0]);
+      const csv = [cols.join(',')].concat(rows.map(r => cols.map(c => {
+        let v = r[c]; if (v==null) v='';
+        v = String(v); return /[",\n]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v;
+      }).join(','))).join('\n');
+      const blob = new Blob([csv], {type:'text/csv'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob); a.download = 'credit_reports.csv'; a.click();
+      toast(`Exported ${rows.length} report(s).`);
+    }
+
+    // init
+    document.getElementById('apiKey').value = localStorage.getItem('csrKey') || '';
+    loadList();
+  </script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+supplier,gstin,score,risk_band,status,gst_provider,mca_provider,gst_legal_name,gst_trade_name,gst_status,gst_type,gst_state,gst_registration_date,gst_pan,gst_returns_filed,gst_last_filed,mca_registered,mca_company_status,mca_open_charges,legal_active_insolvency,legal_recovery_cases,created_at
+Dashboard User,27AAACD2532K1ZT,84.04,Low,ready,sandbox,mock,D C TEXTILE MILLS PRIVATE LIMITED,D C TEXTILE MILLS PVT LTD,Active,Regular,BOISAR_604,01/07/2017,AAACD2532K,4,20-06-2026,True,Dormant,1,False,0,2026-06-26T18:52:20.193021+00:00
+Dashboard User,27ACIFS3818C1Z6,,Unknown,failed,sandbox,mock,,,,,,,,,,True,Dormant,2,False,0,2026-06-26T18:49:15.402469+00:00
+Dashboard User,29AAIFC4058J1Z5,44.0,High,ready,sandbox,mock,CREATION,CREATION,Active,Regular,LGSTO 016- Bengaluru,01/07/2017,AAIFC4058J,4,20-06-2026,True,Strike Off,0,False,0,2026-06-26T18:48:47.257548+00:00
+Dashboard User,24AAHCS4768D2Z9,,Unknown,failed,sandbox,mock,,,,,,,,,,True,Dormant,1,False,0,2026-06-26T18:47:52.278328+00:00

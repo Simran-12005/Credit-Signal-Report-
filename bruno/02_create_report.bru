@@ -1,0 +1,32 @@
+meta {
+  name: 02 Create Report
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/credit-signal/reports
+  body: json
+  auth: none
+}
+
+headers {
+  X-API-Key: {{apiKey}}
+}
+
+body:json {
+  {
+    "gstin": "27AAACD2532K1ZT"
+  }
+}
+
+vars:pre-request {
+  baseUrl: http://localhost:8120
+  apiKey: csr_TiVVPEvVuHbshB_2VmkzIUggFTxKqN9Nmfl8T3Ixa68
+}
+
+script:post-response {
+  if (res.body && res.body.id) {
+    bru.setVar("reportId", res.body.id);
+  }
+}

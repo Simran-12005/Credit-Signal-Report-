@@ -1,0 +1,20 @@
+meta {
+  name: 03 Get Report
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/credit-signal/reports/{{reportId}}
+  body: none
+  auth: none
+}
+
+headers {
+  X-API-Key: {{apiKey}}
+}
+
+vars:pre-request {
+  baseUrl: http://localhost:8120
+  apiKey: csr_TiVVPEvVuHbshB_2VmkzIUggFTxKqN9Nmfl8T3Ixa68
+}
